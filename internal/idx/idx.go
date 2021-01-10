@@ -14,8 +14,8 @@ import (
 
 const base = "https://wgsf.org.uk"
 
-func Index(rateLim time.Duration) []*core.Event {
-	var events []*core.Event
+func Index(rateLim time.Duration) []core.Event {
+	var events []core.Event
 	t := time.NewTicker(rateLim)
 
 	var i int
@@ -66,7 +66,7 @@ func Index(rateLim time.Duration) []*core.Event {
 			})
 
 			// add
-			events = append(events, &core.Event{
+			events = append(events, core.Event{
 				SRC:         src,
 				DataID:      dataID,
 				Date:        date,
