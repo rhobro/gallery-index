@@ -14,7 +14,7 @@ import (
 func init() {
 	flag.StringVar(&outPath, "o", "", "path to dir for output JSON file")
 	flag.BoolVar(&formatJSON, "f", false, "controls if output JSON file is formatted")
-	flag.DurationVar(&rateLim, "l", 1, "time between requests for rate-limiting")
+	flag.DurationVar(&rateLim, "l", time.Nanosecond, "time between requests for rate-limiting")
 	flag.Parse()
 
 	// use tmp path as output if not specified by user

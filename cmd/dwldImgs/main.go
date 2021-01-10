@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"github.com/Bytesimal/goutils/pkg/fileio"
+	"github.com/Bytesimal/goutils/pkg/httputil"
 	"github.com/Bytesimal/wgsfGalleryIdx/internal/core"
 	"github.com/Bytesimal/wgsfGalleryIdx/internal/idx"
 	"io"
@@ -19,7 +21,7 @@ import (
 func init() {
 	flag.StringVar(&jsonIn, "i", "", "json path to gallery index")
 	flag.StringVar(&out, "o", "", "directory in which to download images")
-	flag.DurationVar(&rateLim, "l", 1, "rate limit duration if not using input json file")
+	flag.DurationVar(&rateLim, "l", time.Nanosecond, "rate limit duration if not using input json file")
 	flag.Parse()
 
 	if out == "" {
@@ -36,6 +38,9 @@ var (
 )
 
 func main() {
+	// init
+	t := time.NewTicker(rateLim)
+
 	// load events
 	var events []core.Event
 	if jsonIn == "" {
@@ -63,20 +68,36 @@ func main() {
 
 			// dwld and save imgs
 			for i, img := range e.Images {
-				rsp, err := http.Get(img)
-				if err != nil {
-					log.Fatalf("can't rq img at %s: %s", img, err)
-				}
 				imgPath := filepath.Join(root, strconv.Itoa(i)+filepath.Ext(img))
 				out, err := os.Create(imgPath)
 				if err != nil {
 					log.Fatalf("can't create img file at %s: %s", imgPath, err)
 				}
-				_, err = io.Copy(out, rsp.Body)
-				if err != nil {
-					log.Fatalf("can't copy file contents into file at %s: %s", imgPath, err)
+
+				// stop connection reset err
+				err = nil
+				for i := 0; i < 10; i++ {
+					rq, _ := http.NewRequest("GET", img, nil)
+					var rsp *http.Response
+					rsp, err = httputil.RQUntil(http.DefaultClient, rq, 10)
+					<-t.C
+					if err != nil {
+						err = fmt.Errorf("can't rq img at %s: %s", img, err)
+						continue
+					}
+					_, err = io.Copy(out, rsp.Body)
+					if err != nil {
+						err = fmt.Errorf("can't copy file contents into file at %s: %s", imgPath, err)
+						continue
+					}
+					rsp.Body.Close()
+					break
 				}
-				rsp.Body.Close()
+				if err != nil {
+					log.Printf(err.Error())
+					continue
+				}
+
 				out.Close()
 				err = os.Chmod(imgPath, os.ModePerm)
 				if err != nil {

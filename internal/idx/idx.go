@@ -2,6 +2,7 @@ package idx
 
 import (
 	"fmt"
+	"github.com/Bytesimal/goutils/pkg/httputil"
 	"github.com/Bytesimal/wgsfGalleryIdx/internal/core"
 	"github.com/PuerkitoBio/goquery"
 	"log"
@@ -23,7 +24,7 @@ func Index(rateLim time.Duration) []core.Event {
 		// rq
 		rq, _ := http.NewRequest("GET", fmt.Sprintf("https://wgsf.org.uk/ajax/filter/gallery/%d", i), nil)
 		rq.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.101 Safari/537.36")
-		rsp, err := http.DefaultClient.Do(rq)
+		rsp, err := httputil.RQUntil(http.DefaultClient, rq, 10)
 		<-t.C
 		if err != nil {
 			log.Fatalf("can't request page: %s", err)
