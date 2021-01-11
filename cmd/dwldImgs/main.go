@@ -79,7 +79,7 @@ func main() {
 				for i := 0; i < 10; i++ {
 					rq, _ := http.NewRequest("GET", img, nil)
 					var rsp *http.Response
-					rsp, err = httputil.RQUntil(http.DefaultClient, rq, 10)
+					rsp, err = httputil.RQUntil(http.DefaultClient, rq)
 					<-t.C
 					if err != nil {
 						err = fmt.Errorf("can't rq img at %s: %s", img, err)
