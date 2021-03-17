@@ -1,5 +1,5 @@
-github.com/Bytesimal/goutils v1.0.9 h1:Nt5yX6642QXFrsHleYVoZ8Rzf6DYaFcnqFZJzvZ08xQ=
-github.com/Bytesimal/goutils v1.0.9/go.mod h1:SnXrrBqmleGIaDaqDtE+jUoAlSioKPU945QfMmg9qk0=
+github.com/rhobro/goutils v1.0.9 h1:Nt5yX6642QXFrsHleYVoZ8Rzf6DYaFcnqFZJzvZ08xQ=
+github.com/rhobro/goutils v1.0.9/go.mod h1:SnXrrBqmleGIaDaqDtE+jUoAlSioKPU945QfMmg9qk0=
 github.com/PuerkitoBio/goquery v1.6.0 h1:j7taAbelrdcsOlGeMenZxc2AWXD5fieT1/znArdnx94=
 github.com/PuerkitoBio/goquery v1.6.0/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
 github.com/andybalholm/cascadia v1.1.0 h1:BuuO6sSfQNFRu1LppgbD25Hr2vLYW25JvxHs5zzsLTo=
