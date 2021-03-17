@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"github.com/Bytesimal/goutils/pkg/fileio"
-	"github.com/Bytesimal/wgsfGalleryIdx/internal/idx"
+	"github.com/rhobro/goutils/pkg/fileio"
+	"github.com/rhobro/wgsfGalleryIdx/internal/idx"
 	"log"
 	"os"
 	"path/filepath"
