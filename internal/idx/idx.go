@@ -2,8 +2,8 @@ package idx
 
 import (
 	"fmt"
-	"github.com/Bytesimal/goutils/pkg/httputil"
-	"github.com/Bytesimal/wgsfGalleryIdx/internal/core"
+	"github.com/rhobro/goutils/pkg/httputil"
+	"github.com/rhobro/wgsfGalleryIdx/internal/core"
 	"github.com/PuerkitoBio/goquery"
 	"log"
 	"net/http"
