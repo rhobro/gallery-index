@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/wgsfGalleryIdx.iml" filepath="$PROJECT_DIR$/.idea/wgsfGalleryIdx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/wgsf-gallery-index.iml" filepath="$PROJECT_DIR$/.idea/wgsf-gallery-index.iml" />
     </modules>
   </component>
 </project>

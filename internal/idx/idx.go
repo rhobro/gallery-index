@@ -15,6 +15,15 @@ import (
 
 const base = "https://wgsf.org.uk"
 
+func init() {
+	// use tor
+	p, _ := url.Parse("socks5://localhost:9050")
+	http.DefaultTransport = &http.Transport{
+		Proxy: http.ProxyURL(p),
+		MaxIdleConns: 1,
+	}
+}
+
 func Index(rateLim time.Duration) []core.Event {
 	var events []core.Event
 	t := time.NewTicker(rateLim)
@@ -67,6 +76,7 @@ func Index(rateLim time.Duration) []core.Event {
 			})
 
 			// add
+			log.Printf("Event ID: %d", dataID)
 			events = append(events, core.Event{
 				SRC:         src,
 				DataID:      dataID,

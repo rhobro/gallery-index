@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
 	"github.com/Bytesimal/goutils/pkg/fileio"
 	"github.com/Bytesimal/goutils/pkg/httputil"
 	"github.com/Bytesimal/wgsfGalleryIdx/internal/core"
@@ -38,8 +37,6 @@ var (
 )
 
 func main() {
-	// init
-	t := time.NewTicker(rateLim)
 
 	// load events
 	var events []core.Event
@@ -74,34 +71,24 @@ func main() {
 					log.Fatalf("can't create img file at %s: %s", imgPath, err)
 				}
 
-				// stop connection reset err
-				err = nil
-				for i := 0; i < 10; i++ {
-					rq, _ := http.NewRequest("GET", img, nil)
-					var rsp *http.Response
-					rsp, err = httputil.RQUntil(http.DefaultClient, rq)
-					<-t.C
-					if err != nil {
-						err = fmt.Errorf("can't rq img at %s: %s", img, err)
-						continue
-					}
-					_, err = io.Copy(out, rsp.Body)
-					if err != nil {
-						err = fmt.Errorf("can't copy file contents into file at %s: %s", imgPath, err)
-						continue
-					}
-					rsp.Body.Close()
-					break
-				}
+				// download
+				rq, _ := http.NewRequest("GET", img, nil)
+				rsp, err := httputil.RQUntil(http.DefaultClient, rq)
 				if err != nil {
-					log.Printf(err.Error())
-					continue
+					log.Printf("can't rq img at %s: %s", img, err)
 				}
+				_, err = io.Copy(out, rsp.Body)
+				if err != nil {
+					log.Printf("can't copy file contents into file at %s: %s", imgPath, err)
+				}
+				rsp.Body.Close()
+
+				log.Printf("Downloaded %5d : %s", e.DataID, filepath.Base(img))
 
 				out.Close()
 				err = os.Chmod(imgPath, os.ModePerm)
 				if err != nil {
-					log.Fatalf("can't change perms on img file at %s: %s", imgPath, err)
+					log.Printf("can't change perms on img file at %s: %s", imgPath, err)
 				}
 			}
 		}
