@@ -3,10 +3,18 @@ package main
 import (
 	"encoding/json"
 	"flag"
+<<<<<<< HEAD
 	"github.com/Bytesimal/goutils/pkg/fileio"
 	"github.com/Bytesimal/goutils/pkg/httputil"
 	"github.com/Bytesimal/wgsfGalleryIdx/internal/core"
 	"github.com/Bytesimal/wgsfGalleryIdx/internal/idx"
+=======
+	"fmt"
+	"github.com/rhobro/goutils/pkg/fileio"
+	"github.com/rhobro/goutils/pkg/httputil"
+	"github.com/rhobro/wgsfGalleryIdx/internal/core"
+	"github.com/rhobro/wgsfGalleryIdx/internal/idx"
+>>>>>>> b6c12b8e0973000964af7cc12bf703c8e7472b69
 	"io"
 	"io/ioutil"
 	"log"
