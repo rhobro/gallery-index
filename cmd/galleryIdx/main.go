@@ -12,8 +12,8 @@ import (
 )
 
 func init() {
-	flag.StringVar(&outPath, "o", "", "path to dir for output JSON file")
-	flag.BoolVar(&formatJSON, "f", false, "controls if output JSON file is formatted")
+	wd, _ := os.Getwd()
+	flag.StringVar(&outPath, "o", wd, "path to dir for output JSON file")
 	flag.DurationVar(&rateLim, "l", time.Nanosecond, "time between requests for rate-limiting")
 	flag.Parse()
 
@@ -26,7 +26,6 @@ func init() {
 }
 
 var outPath string
-var formatJSON bool
 var rateLim time.Duration
 
 func main() {
@@ -34,11 +33,7 @@ func main() {
 
 	// save to JSON file
 	var bs []byte
-	if formatJSON {
-		bs, _ = json.MarshalIndent(&events, "", "    ")
-	} else {
-		bs, _ = json.Marshal(&events)
-	}
+	bs, _ = json.MarshalIndent(&events, "", "    ")
 	f, _ := os.Create(filepath.Join(outPath, "gallery_idx.json"))
 	defer f.Close()
 	_, _ = f.Write(bs)

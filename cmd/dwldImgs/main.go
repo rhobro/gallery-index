@@ -18,8 +18,9 @@ import (
 )
 
 func init() {
+	wd, _ := os.Getwd()
 	flag.StringVar(&jsonIn, "i", "", "json path to gallery index")
-	flag.StringVar(&out, "o", "", "directory in which to download images")
+	flag.StringVar(&out, "o", wd, "directory in which to download images")
 	flag.DurationVar(&rateLim, "l", time.Nanosecond, "rate limit duration if not using input json file")
 	flag.Parse()
 
@@ -39,7 +40,7 @@ var (
 func main() {
 
 	// load events
-	var events []core.Event
+	var events map[int]core.Event
 	if jsonIn == "" {
 		events = idx.Index(rateLim)
 	} else {
@@ -54,10 +55,10 @@ func main() {
 	}
 
 	// dwld
-	for _, e := range events {
+	for id, e := range events {
 		if len(e.Images) > 0 {
 			// group into dirs with name as data-id
-			root := filepath.Join(out, strconv.Itoa(e.DataID))
+			root := filepath.Join(out, strconv.Itoa(id))
 			err := os.MkdirAll(root, os.ModePerm)
 			if err != nil {
 				log.Fatalf("can't create dir at %s: %s", root, err)
@@ -83,7 +84,7 @@ func main() {
 				}
 				rsp.Body.Close()
 
-				log.Printf("Downloaded %5d : %s", e.DataID, filepath.Base(img))
+				log.Printf("Downloaded %5d : %s", id, filepath.Base(img))
 
 				out.Close()
 				err = os.Chmod(imgPath, os.ModePerm)

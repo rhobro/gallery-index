@@ -2,9 +2,9 @@ package idx
 
 import (
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/rhobro/goutils/pkg/httputil"
 	"github.com/rhobro/wgsfGalleryIdx/internal/core"
-	"github.com/PuerkitoBio/goquery"
 	"log"
 	"net/http"
 	"net/url"
@@ -24,8 +24,8 @@ func init() {
 	}
 }
 
-func Index(rateLim time.Duration) []core.Event {
-	var events []core.Event
+func Index(rateLim time.Duration) map[int]core.Event {
+	events := make(map[int]core.Event)
 	t := time.NewTicker(rateLim)
 
 	var i int
@@ -77,13 +77,12 @@ func Index(rateLim time.Duration) []core.Event {
 
 			// add
 			log.Printf("Event ID: %d", dataID)
-			events = append(events, core.Event{
+			events[dataID] = core.Event{
 				SRC:         src,
-				DataID:      dataID,
 				Date:        date,
 				Description: description,
 				Images:      images,
-			})
+			}
 		})
 
 		i += sl.Length()
