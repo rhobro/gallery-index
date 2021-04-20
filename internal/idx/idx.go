@@ -33,8 +33,8 @@ func Index(rateLim time.Duration) []core.Event {
 		// rq
 		rq, _ := http.NewRequest("GET", fmt.Sprintf("https://wgsf.org.uk/ajax/filter/gallery/%d", i), nil)
 		rq.Header.Set("User-Agent", httputil.RandUA())
-		rsp, err := httputil.RQUntil(http.DefaultClient, rq)
 		<-t.C
+		rsp, err := httputil.RQUntil(http.DefaultClient, rq)
 		if err != nil {
 			log.Fatalf("can't request page: %s", err)
 		}
