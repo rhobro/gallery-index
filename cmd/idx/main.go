@@ -32,8 +32,7 @@ func main() {
 	events := idx.Index(rateLim)
 
 	// save to JSON file
-	var bs []byte
-	bs, _ = json.MarshalIndent(&events, "", "    ")
+	bs, _ := json.MarshalIndent(&events, "", "    ")
 	f, _ := os.Create(filepath.Join(outPath, "gallery_idx.json"))
 	defer f.Close()
 	_, _ = f.Write(bs)

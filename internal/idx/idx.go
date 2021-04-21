@@ -19,13 +19,12 @@ func init() {
 	// use tor
 	p, _ := url.Parse("socks5://localhost:9050")
 	http.DefaultTransport = &http.Transport{
-		Proxy: http.ProxyURL(p),
+		Proxy:        http.ProxyURL(p),
 		MaxIdleConns: 1,
 	}
 }
 
-func Index(rateLim time.Duration) map[int]core.Event {
-	events := make(map[int]core.Event)
+func Index(rateLim time.Duration) (events []*core.Event) {
 	t := time.NewTicker(rateLim)
 
 	var i int
@@ -77,12 +76,13 @@ func Index(rateLim time.Duration) map[int]core.Event {
 
 			// add
 			log.Printf("Event ID: %d", dataID)
-			events[dataID] = core.Event{
+			events = append(events, &core.Event{
 				SRC:         src,
+				DataID:      dataID,
 				Date:        date,
 				Description: description,
 				Images:      images,
-			}
+			})
 		})
 
 		i += sl.Length()
