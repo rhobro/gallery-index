@@ -3,8 +3,8 @@ package idx
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/rhobro/goutils/pkg/httputil"
-	"github.com/rhobro/wgsfGalleryIdx/internal/core"
+	"github.com/rhobro/utils.go/pkg/httputil"
+	"github.com/rhobro/wgsf-gallery-index/internal/core"
 	"log"
 	"net/http"
 	"net/url"
